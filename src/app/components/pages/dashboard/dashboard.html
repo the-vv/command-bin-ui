@@ -1,20 +1,19 @@
 <div class="drawer drawer-open h-full">
     <input id="my-drawer" type="checkbox" class="drawer-toggle" />
-    <div class="drawer-content h-full">
-        <!-- Page content here -->
-        hey
+    <div class="drawer-content h-full overflow-auto">
+        @defer {
+            <app-command-list [commandsList]="sampleCommands"></app-command-list>
+        } @loading {
+            <app-spinner></app-spinner>
+        }
     </div>
     <div class="drawer-side bg-base-200 h-full">
-        <div class="w-full flex items-center justify-between px-4 py-4 bg-base-300">
-            <span class="font-bold">Categories</span>
-            <button class="btn btn-sm btn-circle btn-primary">
-                <span class="material-symbols-outlined">add</span>
-            </button>
+        <div class="w-72 block">
+            @defer {
+                <app-category-list class="block"></app-category-list>
+            } @loading {
+                <app-spinner></app-spinner>
+            }
         </div>
-        <ul class="menu text-base-content w-80 p-4 pt-2">
-            <!-- Sidebar content here -->
-            <li><a>Sidebar Item 1</a></li>
-            <li><a>Sidebar Item 2</a></li>
-        </ul>
     </div>
 </div>

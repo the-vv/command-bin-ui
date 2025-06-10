@@ -1,0 +1,5 @@
+<div class="w-full max-h-full grid grid-cols-1 xl:grid-cols-2 overflow-auto gap-4 p-4">
+    @for (command of commandsList(); track command.id) {
+        <app-command-item [command]="command"></app-command-item>
+    }
+</div>
