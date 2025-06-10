@@ -1,1 +1,17 @@
 @use "./tailwind.css";
+@use "./font.scss";
+
+body {
+    font-family: "Space Mono", monospace;
+    font-weight: 400;
+}
+
+router-outlet {
+    &+* {
+        min-height: 0;
+        flex-grow: 1;
+        width: 100%;
+        display: block;
+        overflow: auto;
+    }
+}

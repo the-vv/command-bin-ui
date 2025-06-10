@@ -1,0 +1,25 @@
+<div class="h-screen flex flex-col w-full">
+    <div class="navbar bg-base-100 shadow-sm w-full shrink-0">
+        <div class="flex-1">
+            <a class="btn btn-ghost text-xl">
+                <span class="material-symbols-outlined text-3xl!">terminal</span>
+                Command Bin
+            </a>
+        </div>
+        <div class="flex-none">
+            <ul class="menu menu-horizontal px-1">
+                <li><a>Link</a></li>
+                <li>
+                    <details>
+                        <summary>Parent</summary>
+                        <ul class="bg-base-100 rounded-t-none p-2">
+                            <li><a>Link 1</a></li>
+                            <li><a>Link 2</a></li>
+                        </ul>
+                    </details>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <router-outlet></router-outlet>
+</div>
