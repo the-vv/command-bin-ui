@@ -25,6 +25,9 @@
                         [disabled]="loading()">
                         Login
                     </button>
+                    <p class="text-sm text-center mt-4">
+                        Don't have an account? <a class="link link-primary" [routerLink]="['/register']">Register</a>
+                    </p>
                     @if (errorMessage()) {
                         <div role="alert" class="alert alert-error alert-soft mt-4">
                             <span>{{errorMessage()}}</span>

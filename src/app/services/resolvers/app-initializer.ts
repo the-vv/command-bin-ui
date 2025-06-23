@@ -9,7 +9,7 @@ export const appInitializer = () => {
     const toastService = inject(ToastService);
     const hasToken = userService.token;
     if (hasToken) {
-        return new Promise<void>((resolve, reject) => {
+        return new Promise<void>((resolve) => {
             userService.getProfileAsync().subscribe({
                 next: (user) => {
                     userService.setAuthState(user);

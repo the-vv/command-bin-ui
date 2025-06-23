@@ -1,13 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoadingBtn } from '@app/directives/loading-btn';
 import { ToastService } from '@app/services/toast';
 import { UserService } from '@app/services/user';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, LoadingBtn],
+  imports: [ReactiveFormsModule, LoadingBtn, RouterLink],
   templateUrl: './login.html',
   styles: `
   `
@@ -42,7 +42,7 @@ export class Login {
         }
       });
     } else {
-      // console.warn('Form is invalid');
+      this.errorMessage.set('Please fill in all the fields correctly.');
     }
   }
 

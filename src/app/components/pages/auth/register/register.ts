@@ -1,13 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoadingBtn } from '@app/directives/loading-btn';
 import { ToastService } from '@app/services/toast';
 import { UserService } from '@app/services/user';
 
 @Component({
   selector: 'app-register',
-  imports: [ReactiveFormsModule, LoadingBtn],
+  imports: [ReactiveFormsModule, LoadingBtn, RouterLink],
   templateUrl: './register.html',
   styles: ``
 })
@@ -44,7 +44,7 @@ export class Register {
         }
       });
     } else {
-      // console.warn('Form is invalid');
+      this.errorMessage.set('Please fill in all the fields correctly.');
     }
   }
 
