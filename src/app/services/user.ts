@@ -31,7 +31,9 @@ export class UserService {
 
   public setAuthState(user: User | null, token?: string) {
     this._user.next(user);
-    this.token = token || null;
+    if (token) {
+      this.token = token;
+    }
   }
 
   public logout() {
@@ -45,6 +47,10 @@ export class UserService {
 
   public registerAsync(user: Omit<User, 'id'> & { password: string }) {
     return this.http.post<{ user: User; access_token: string }>(`${environment.apiBaseUrl}/auth/signup`, user)
+  }
+
+  public getProfileAsync() {
+    return this.http.get<User>(`${environment.apiBaseUrl}/user/profile`)
   }
 
 }

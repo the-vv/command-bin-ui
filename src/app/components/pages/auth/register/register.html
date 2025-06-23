@@ -1,0 +1,42 @@
+<!-- Login Page -->
+<div class="flex items-center justify-center min-h-screen bg-base-100 login-bg">
+    <div class="min-w-md rounded-2xl shadow-lg z-10">
+        <div class="size-full p-1 bg-primary rounded-2xl bg-gradient-to-br from-primary to-secondary">
+            <div class="size-full px-16 py-18 bg-base-200 rounded-xl">
+                <div class="text-xl flex gap-4 w-full pb-6 justify-center items-center bg-base-200 size-full">
+                    <img src="/icon.png" class="h-10" alt="">
+                    <span class="text-2xl font-bold">
+                        <span style="letter-spacing: 2px;">CMD</span> Bin_
+                    </span>
+                </div>
+                <h2 class="text-2xl font-medium text-center text-base-content pb-4">Login</h2>
+                <form [formGroup]="loginForm">
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-base-content">Name</label>
+                        <input type="text" id="name" formControlName="name" class="input input-bordered w-full"
+                            placeholder="Enter your name" required />
+                    </div>
+                    <div class="mb-4">
+                        <label for="email" class="block text-sm font-medium text-base-content">Email</label>
+                        <input type="text" id="email" formControlName="email" class="input input-bordered w-full"
+                            placeholder="Enter your email" required />
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="block text-sm font-medium text-base-content">Password</label>
+                        <input type="password" id="password" formControlName="password"
+                            class="input input-bordered w-full" placeholder="Enter your password" required />
+                    </div>
+                    <button type="button" class="btn btn-primary w-full" (click)="register()" [loadingBtn]="loading()"
+                        [disabled]="loading()">
+                        Register
+                    </button>
+                    @if (errorMessage()) {
+                    <div role="alert" class="alert alert-error alert-soft mt-4">
+                        <span>{{errorMessage()}}</span>
+                    </div>
+                    }
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
