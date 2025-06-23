@@ -1,5 +1,8 @@
 {
     "cSpell.words": [
-        "basecoat"
-    ]
+        "basecoat",
+        "oklch",
+        "toastify"
+    ],
+    "typescript.tsdk": "node_modules/typescript/lib"
 }

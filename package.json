@@ -20,10 +20,12 @@
     "@angular/router": "^20.0.0",
     "@angular/ssr": "^20.0.1",
     "@tailwindcss/postcss": "^4.1.8",
+    "@types/toastify-js": "^1.12.4",
     "express": "^5.1.0",
     "postcss": "^8.5.4",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.1.8",
+    "toastify-js": "^1.12.0",
     "tslib": "^2.3.0"
   },
   "devDependencies": {

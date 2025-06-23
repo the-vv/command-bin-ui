@@ -1,5 +1,10 @@
 @use "./styles/tailwind.css";
 @use "./styles/font.scss";
+@import "toastify-js/src/toastify.css";
+
+// Page styles
+@import "./styles/pages/login";
+
 
 body {
     font-family: "Space Mono", monospace;
@@ -14,4 +19,9 @@ router-outlet {
         display: block;
         overflow: auto;
     }
+}
+
+.input:focus,
+.input:focus-within {
+    outline-offset: -1px !important;
 }

@@ -12,7 +12,7 @@ export class UserService {
 
   private http = inject(HttpClient);
 
-  private user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
+  private _user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
   public get token(): string | null {
     return localStorage.getItem(LocalStorageKey.TOKEN)
@@ -25,9 +25,15 @@ export class UserService {
     }
   }
 
-  public setAuthState(user: User | null) {
-    this.user.next(user);
+  public isAuthenticated(): boolean {
+    return !!this.token && !!this._user.value;
   }
+
+  public setAuthState(user: User | null, token?: string) {
+    this._user.next(user);
+    this.token = token || null;
+  }
+
   public logout() {
     this.setAuthState(null);
     this.token = null;
@@ -40,6 +46,5 @@ export class UserService {
   public registerAsync(user: Omit<User, 'id'> & { password: string }) {
     return this.http.post<{ user: User; access_token: string }>(`${environment.apiBaseUrl}/auth/signup`, user)
   }
-
 
 }

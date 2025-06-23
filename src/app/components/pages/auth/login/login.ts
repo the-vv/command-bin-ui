@@ -1,47 +1,41 @@
 import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { UserService } from '../../../../services/user';
+import { LoadingBtn } from '@app/directives/loading-btn';
+import { ToastService } from '@app/services/toast';
+import { UserService } from '@app/services/user';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, LoadingBtn],
   templateUrl: './login.html',
   styles: `
-    .login-bg::before {
-      content: '';
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      opacity: 0.4;
-      background-image: url('/login-bg.png');
-      background-size: cover;
-      background-position: left center;
-    }
   `
 })
 export class Login {
   private userService = inject(UserService);
+  private toastService = inject(ToastService);
   protected loginForm = new FormBuilder().group({
     email: ['', Validators.required],
     password: ['', Validators.required]
   })
   protected errorMessage = signal<string | null>(null);
+  protected loading = signal<boolean>(false);
 
   protected login() {
     if (this.loginForm.valid) {
+      this.loading.set(true);
       this.userService.loginAsync({
         email: this.loginForm.value.email!,
         password: this.loginForm.value.password!
       }).subscribe({
         next: ({ user, access_token }) => {
           this.userService.setAuthState(user);
-          this.userService.token = access_token;
+          this.loading.set(false);
         },
         error: (err) => {
-          console.error('Login failed', err);
+          this.errorMessage.set(err.error.message || 'Login failed');
+          this.toastService.showError(err.error.message);
+          this.loading.set(false);
         }
       });
     } else {

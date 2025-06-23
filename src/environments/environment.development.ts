@@ -1,3 +1,3 @@
 export const environment = {
-    apiBaseUrl: 'https://cmdbin.thevv.me/api'
+    apiBaseUrl: 'http://localhost:3000'
 };
