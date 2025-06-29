@@ -29,6 +29,14 @@ export class UserService {
     return !!this.token && !!this._user.value;
   }
 
+  public loggedInUser() {
+    return this._user.asObservable();
+  }
+  
+  public get user(): User | null {
+    return this._user.value;
+  }
+
   public setAuthState(user: User | null, token?: string) {
     this._user.next(user);
     if (token) {

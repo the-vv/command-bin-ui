@@ -12,7 +12,7 @@ export class ToastService {
     if (typeof err === 'string') {
       message = err;
     } else if (err instanceof HttpErrorResponse) {
-      message = `${err.error.status || err.status} ${err.error?.message || 'An error occurred'}`;
+      message = `${err.error.status || err.status}: ${err.error?.message || 'An error occurred'}`;
     }
     return message;
   }
@@ -31,6 +31,7 @@ export class ToastService {
         color: "var(--color-red-500)",
         borderRadius: "1rem",
         border: "2px solid var(--color-red-500)",
+        zIndex: '9999', // Ensure it appears above other elements
       },
     }).showToast();
   }
@@ -48,6 +49,7 @@ export class ToastService {
         color: "var(--color-green-500)",
         borderRadius: "1rem",
         border: "2px solid var(--color-green-500)",
+        zIndex: '9999', // Ensure it appears above other elements
       },
     }).showToast();
   }
@@ -65,6 +67,7 @@ export class ToastService {
         color: "var(--color-blue-300)",
         borderRadius: "1rem",
         border: "2px solid var(--color-blue-300)",
+        zIndex: '9999', // Ensure it appears above other elements
       },
     }).showToast();
   }

@@ -1,11 +1,38 @@
 <div class="w-full flex items-center justify-between px-4 py-4 bg-base-300">
     <span class="font-bold">Categories</span>
-    <button class="btn btn-sm btn-circle btn-primary">
+    <button class="btn btn-sm btn-circle btn-primary" (click)="dialog.open()">
         <span class="material-symbols-outlined">add</span>
     </button>
 </div>
 <ul class="menu text-base-content w-full p-4 pt-2">
     <!-- Sidebar content here -->
-    <li><a>Recent Commands</a></li>
-    <li><a>Frequent Commands</a></li>
+    <!-- <li><a>Recent Commands</a></li>
+    <li><a>Frequent Commands</a></li> -->
+    @for(cat of categoryResource.value() || []; track cat.id) {
+      <li (click)="selectCategory(cat.id!)"><a [ngClass]="{'menu-active': cat.id === selectedCategoryId}">{{ cat.name }}</a></li>
+    } @empty {
+        @if (categoryResource.isLoading()) {
+            @defer {
+                <app-spinner></app-spinner>
+            }
+        } @else {
+            <li class="text-gray-500">No categories found</li>
+        }
+    }
 </ul>
+
+<app-common-dialog title="Add Category" #dialog="commonDialog">
+    <form [formGroup]="categoryForm" class="flex flex-col gap-4 w-full">
+        <div class="flex gap-2 flex-col">
+            <label for="categoryName" class="w-24">Name</label>
+            <input type="text" placeholder="Type here" id="categoryName" class="input w-full" formControlName="name" inputValidation />
+        </div>
+        <div class="flex gap-2 flex-col">
+            <label for="categoryDescription" class="w-24">Description</label>
+            <textarea placeholder="Type here" id="categoryDescription" class="textarea w-full" formControlName="description"></textarea>
+        </div>
+        <div class="flex justify-end">
+            <button class="btn btn-primary" (click)="createCategory(dialog)" [loadingBtn]="loadingCreate">Create</button>
+        </div>
+    </form>
+</app-common-dialog>
