@@ -3,7 +3,7 @@ import { inject, Injectable } from '@angular/core';
 import { Category } from '@app/models/category';
 import { catchError, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ToastService } from './toast';
+import { ToastService } from './toast-service';
 
 @Injectable({
   providedIn: 'root'

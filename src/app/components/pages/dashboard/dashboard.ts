@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, inject, resource, signal } from '@angular/core';
 import { CategoryList } from "../category-list/category-list";
 import { Spinner } from "../../commons/spinner/spinner";
 import { CommandList } from "../command-list/command-list";
-import { ICommandItem } from '../../../models/command';
+import { firstValueFrom } from 'rxjs';
+import { CommandService } from '@app/services/command-service';
+import { Category } from '@app/models/category';
+import { ICommandItem } from '@app/models/command';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,37 +15,18 @@ import { ICommandItem } from '../../../models/command';
 })
 export class Dashboard {
 
-  sampleCommands: ICommandItem[] = [
-    {
-      id: '1',
-      command: 'ls -la',
-      description: 'List all files and directories with details',
-      category: 'File System'
-    },
-    {
-      id: '2',
-      command: 'git status',
-      description: 'Show the working tree status',
-      category: 'Git'
-    },
-    {
-      id: '3',
-      command: 'npm install',
-      description: 'Install all dependencies listed in package.json',
-      category: 'Node.js'
-    },
-    {
-      id: '4',
-      command: 'docker ps',
-      description: 'List running Docker containers',
-      category: 'Docker'
-    },
-    {
-      id: '5',
-      command: 'python3 script.py',
-      description: 'Run a Python script',
-      category: 'Python'
-    }
-  ];
+  private commandService = inject(CommandService);
+
+  public selectedCategory = signal<Category | null>(null)
+  public commandResource = resource({
+    params: () => ({ categoryId: this.selectedCategory()?.id }),
+    loader: (req) => req.params.categoryId ?
+      firstValueFrom(this.commandService.getCommandsByCategoryId(req.params.categoryId)) :
+      Promise.resolve([] as ICommandItem[]),
+  });
+
+  public selectCategory(category: Category) {
+    this.selectedCategory.set(category);
+  }
 
 }

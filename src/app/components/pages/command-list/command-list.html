@@ -1,5 +1,10 @@
-<div class="w-full max-h-full grid grid-cols-1 xl:grid-cols-2 overflow-auto gap-4 p-4">
+<div class="w-full h-full grid grid-cols-1 xl:grid-cols-2 overflow-auto gap-4 p-4">
     @for (command of commandsList(); track command.id) {
         <app-command-item [command]="command"></app-command-item>
+    } @empty {
+        <div class="flex flex-col items-center justify-center gap-8 size-full col-span-2">
+            <img src="/empty.png" alt="Empty Items" class="w-40 h-auto opacity-30" />
+            <span class="text-gray-500 text-3xl">No commands found</span>
+        </div>
     }
 </div>

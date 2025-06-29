@@ -1,6 +1,6 @@
 <div class="w-full flex items-center justify-between px-4 py-4 bg-base-300">
     <span class="font-bold">Categories</span>
-    <button class="btn btn-sm btn-circle btn-primary" (click)="dialog.open()">
+    <button class="btn btn-sm btn-circle btn-primary btn-soft" (click)="dialog.open()">
         <span class="material-symbols-outlined">add</span>
     </button>
 </div>
@@ -9,7 +9,7 @@
     <!-- <li><a>Recent Commands</a></li>
     <li><a>Frequent Commands</a></li> -->
     @for(cat of categoryResource.value() || []; track cat.id) {
-      <li (click)="selectCategory(cat.id!)"><a [ngClass]="{'menu-active': cat.id === selectedCategoryId}">{{ cat.name }}</a></li>
+      <li (click)="selectCategory(cat)"><a [ngClass]="{'menu-active': cat.id === selectedCategoryId()}">{{ cat.name }}</a></li>
     } @empty {
         @if (categoryResource.isLoading()) {
             @defer {
@@ -32,7 +32,7 @@
             <textarea placeholder="Type here" id="categoryDescription" class="textarea w-full" formControlName="description"></textarea>
         </div>
         <div class="flex justify-end">
-            <button class="btn btn-primary" (click)="createCategory(dialog)" [loadingBtn]="loadingCreate">Create</button>
+            <button class="btn btn-primary" (click)="createCategory(dialog)" [loadingBtn]="loadingCreate()">Create</button>
         </div>
     </form>
 </app-common-dialog>

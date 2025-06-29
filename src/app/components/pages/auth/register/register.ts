@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { LoadingBtn } from '@app/directives/loading-btn';
-import { ToastService } from '@app/services/toast';
+import { ToastService } from '@app/services/toast-service';
 import { UserService } from '@app/services/user';
 
 @Component({

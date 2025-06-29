@@ -15,6 +15,7 @@ import { ICommandItem } from '../../../models/command';
 })
 export class CommandList {
 
+  public loading = input(false);
   public commandsList = input.required<ICommandItem[]>()
 
 }

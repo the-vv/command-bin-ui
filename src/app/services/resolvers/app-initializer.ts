@@ -1,7 +1,7 @@
 import { inject } from "@angular/core";
 import { UserService } from "../user";
 import { Router } from "@angular/router";
-import { ToastService } from "../toast";
+import { ToastService } from "../toast-service";
 
 export const appInitializer = () => {
     const userService = inject(UserService);

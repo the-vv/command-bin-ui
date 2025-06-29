@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { UserService } from './user';
 import { catchError, EMPTY, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-import { ToastService } from './toast';
+import { ToastService } from './toast-service';
 
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const userService = inject(UserService);
