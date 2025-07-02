@@ -47,7 +47,9 @@
 
 <app-common-dialog title="Create Command" #commandDialog="commonDialog" [dialogStyles]="{maxWidth: '600px'}">
     @defer (on viewport) {
-        <app-create-command (onCreated)="commandCreated($event, commandDialog)"></app-create-command>
+        @if (commandDialog.isOpen()) {
+            <app-create-command (onCreated)="commandCreated($event, commandDialog)"></app-create-command>
+        }
     } @placeholder {
         <app-spinner></app-spinner>
     }

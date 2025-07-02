@@ -1,5 +1,5 @@
 import { NgClass, NgStyle } from '@angular/common';
-import { Component, ElementRef, EmbeddedViewRef, input, TemplateRef, viewChild } from '@angular/core';
+import { Component, ElementRef, EmbeddedViewRef, input, signal, TemplateRef, viewChild } from '@angular/core';
 
 @Component({
   selector: 'app-common-dialog',
@@ -15,14 +15,14 @@ export class CommonDialog {
   public mainTemplate = viewChild.required<TemplateRef<any>>('mainTemplate'); // Template for the dialog content
   public dialogStyles = input<Record<string, string>>({}); // Inline styles for the dialog
   private viewRef!: EmbeddedViewRef<any>;
-  private container: HTMLElement | null = null;
+  private container = signal<HTMLElement | null>(null); 
   private modalRef: HTMLDialogElement | null = null;
 
   public open() {
     this.viewRef = this.mainTemplate().createEmbeddedView(null);
     this.viewRef.detectChanges();
-    this.container = document.body.appendChild(this.viewRef.rootNodes[0]);
-    this.modalRef = this.container as HTMLDialogElement;
+    this.container.set(document.body.appendChild(this.viewRef.rootNodes[0]));
+    this.modalRef = this.container() as HTMLDialogElement;
     if (!this.modalRef) {
       console.error('Dialog element not found in the template.');
       return;
@@ -45,13 +45,13 @@ export class CommonDialog {
       // Clean up the view reference and container
       this.viewRef.detach();
       this.viewRef.destroy();
-      this.container?.remove();
-      this.container = null;
+      this.container()?.remove();
+      this.container.set(null);
     }, 500);
   }
 
   public isOpen(): boolean {
-    return this.container !== null;
+    return this.container() !== null;
   }
 
 }
