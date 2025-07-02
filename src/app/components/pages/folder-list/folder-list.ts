@@ -1,63 +1,62 @@
 import { Component, inject, model, output, resource, signal } from '@angular/core';
-import { rxResource } from '@angular/core/rxjs-interop';
-import { CategoryService } from '@app/services/category-service';
+import { NgClass } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Spinner } from '@app/components/commons/spinner/spinner';
+import { InputValidationDirective } from '@app/directives/input-validation';
+import { LoadingBtn } from '@app/directives/loading-btn';
+import { Category } from '@app/models/category';
+import { ESource } from '@app/models/common';
+import { CategoryService } from '@app/services/category-service';
 import { ToastService } from '@app/services/toast-service';
 import { UserService } from '@app/services/user';
-import { Category } from '@app/models/category';
-import { LoadingBtn } from '@app/directives/loading-btn';
-import { InputValidationDirective } from '@app/directives/input-validation';
 import { firstValueFrom } from 'rxjs';
-import { NgClass } from '@angular/common';
-import { ESource } from '@app/models/common';
+import { FolderService } from '@app/services/folder-service';
+import { Folder } from '@app/models/folder';
 import { CommonDialog } from '@app/components/commons/common-dialog/common-dialog';
-import { Spinner } from '@app/components/commons/spinner/spinner';
 
 @Component({
-  selector: 'app-category-list',
+  selector: 'app-folder-list',
   imports: [CommonDialog, ReactiveFormsModule, LoadingBtn, InputValidationDirective, NgClass, Spinner],
-  templateUrl: './category-list.html',
+  templateUrl: './folder-list.html',
   styles: ``
 })
-export class CategoryList {
+export class FolderList {
 
   public eSource = ESource;
   public selectedSource = model.required<ESource | null>();
-  private categoryService = inject(CategoryService);
+  private folderService = inject(FolderService);
   private userService = inject(UserService)
   private toastService = inject(ToastService); // Assuming ToastService is used for error handling
   public categoryChanged = output<Category>();
-  protected selectedCategoryId = signal<Category['id']>('');
+  protected selectedFolderId = signal<Category['id']>('');
   protected categoryForm = new FormBuilder().group({
     name: ['', Validators.required],
-    description: ['']
   });
   protected loadingCreate = signal<boolean>(false);
 
-  public categoryResource = resource({
-    loader: () => firstValueFrom(this.categoryService.getMyCategories())
+  public folderResource = resource({
+    loader: () => firstValueFrom(this.folderService.getMyFolders())
   })
 
-  public createCategory(dialogRef: CommonDialog) {
+  public createFolder(dialogRef: CommonDialog) {
     if (this.categoryForm.invalid) {
       this.categoryForm.markAllAsDirty();
-      this.toastService.showError('Category name is required');
+      this.toastService.showError('Folder name is required');
       return;
     }
-    const category: Category = {
+    const category: Folder = {
       name: this.categoryForm.value.name?.trim() || '',
-      description: this.categoryForm.value.description?.trim() || '',
       userId: this.userService.user?.id || ''
     }
     this.loadingCreate.set(true);
-    this.categoryService.createCategory(category).subscribe({
+    this.folderService.createFolder(category).subscribe({
       next: (createdCategory) => {
-        this.selectCategory(createdCategory);
+        this.selectFolder(createdCategory);
         this.loadingCreate.set(false);
         dialogRef.close();
-        this.categoryResource.reload();
+        this.folderResource.reload();
         this.categoryForm.reset();
-        this.toastService.showSuccess(`Category created successfully!`);
+        this.toastService.showSuccess(`Folder created successfully!`);
       },
       error: (err) => {
         this.toastService.showError(err);
@@ -66,9 +65,9 @@ export class CategoryList {
     });
   }
 
-  public selectCategory(category: Category) {
-    this.selectedCategoryId.set(category.id!);
-    this.categoryChanged.emit(category);
+  public selectFolder(folder: Folder) {
+    this.selectedFolderId.set(folder.id!);
+    this.categoryChanged.emit(folder);
   }
 
 }

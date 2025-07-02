@@ -35,6 +35,12 @@
             } @loading {
                 <app-spinner></app-spinner>
             }
+            @defer {
+                <app-folder-list class="block" [(selectedSource)]="selectedSource"
+                    (categoryChanged)="selectedFolder($event)"></app-folder-list>
+            } @loading {
+                <app-spinner></app-spinner>
+            }
         </div>
     </div>
 </div>

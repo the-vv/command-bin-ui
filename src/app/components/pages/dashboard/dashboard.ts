@@ -1,7 +1,4 @@
 import { Component, effect, inject, resource, signal } from '@angular/core';
-import { CategoryList } from "../category-list/category-list";
-import { Spinner } from "../../commons/spinner/spinner";
-import { CommandList } from "../command-list/command-list";
 import { firstValueFrom } from 'rxjs';
 import { CommandService } from '@app/services/command-service';
 import { Category } from '@app/models/category';
@@ -9,10 +6,15 @@ import { ICommandItem } from '@app/models/command';
 import { CommonMenu } from "../common-menu/common-menu";
 import { ESource } from '@app/models/common';
 import { ToastService } from '@app/services/toast-service';
+import { Folder } from '@app/models/folder';
+import { FolderList } from '../folder-list/folder-list';
+import { Spinner } from '@app/components/commons/spinner/spinner';
+import { CategoryList } from '../category-list/category-list';
+import { CommandList } from '../command-list/command-list';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CategoryList, Spinner, CommandList, CommonMenu],
+  imports: [CategoryList, Spinner, CommandList, CommonMenu, FolderList],
   templateUrl: './dashboard.html',
   styles: ``
 })
@@ -70,6 +72,12 @@ export class Dashboard {
     this.selectedSourceId.set(cat.id!);
     this.selectedSourceName.set(cat.name);
     this.selectedSource.set(ESource.CATEGORY);
+  }
+
+  public selectedFolder(folder: Folder) {
+    this.selectedSourceId.set(folder.id!);
+    this.selectedSourceName.set(folder.name);
+    this.selectedSource.set(ESource.FOLDER);
   }
 
 }

@@ -1,10 +1,11 @@
 import { Component, input } from '@angular/core';
 import { CommandItem } from "../command-item/command-item";
-import { ICommandItem } from '../../../models/command';
+import { Spinner } from '@app/components/commons/spinner/spinner';
+import { ICommandItem } from '@app/models/command';
 
 @Component({
   selector: 'app-command-list',
-  imports: [CommandItem],
+  imports: [CommandItem, Spinner],
   templateUrl: './command-list.html',
   styles: `:host {
     display: block;

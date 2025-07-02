@@ -1,0 +1,38 @@
+<div class="w-full flex items-center justify-between px-4 py-4 bg-base-300">
+    <span class="gap-4 items-center flex">
+        <span class="material-symbols-outlined text-2xl!">folder</span>
+        <span class="font-bold">folder</span>
+    </span>
+    <button class="btn btn-sm btn-circle btn-primary btn-soft" (click)="dialog.open()">
+        <span class="material-symbols-outlined">add</span>
+    </button>
+</div>
+<ul class="menu text-base-content w-full p-4 pt-2">
+    @for(folder of folderResource.value() || []; track folder.id) {
+        <li (click)="selectFolder(folder)">
+            <a [ngClass]="{'menu-active': folder.id === selectedFolderId() && selectedSource() === eSource.FOLDER}">
+                {{ folder.name }}
+            </a>
+        </li>
+    } @empty {
+        @if (folderResource.isLoading()) {
+            @defer {
+                <app-spinner></app-spinner>
+            }
+        } @else {
+            <li class="text-gray-500">No folders found</li>
+        }
+    }
+</ul>
+
+<app-common-dialog title="Add Folder" #dialog="commonDialog">
+    <form [formGroup]="categoryForm" class="flex flex-col gap-4 w-full">
+        <div class="flex gap-2 flex-col">
+            <label for="folderName" class="w-24">Name</label>
+            <input type="text" placeholder="Type here" id="folderName" class="input w-full" formControlName="name" inputValidation />
+        </div>
+        <div class="flex justify-end">
+            <button class="btn btn-primary" (click)="createFolder(dialog)" [loadingBtn]="loadingCreate()">Create</button>
+        </div>
+    </form>
+</app-common-dialog>
