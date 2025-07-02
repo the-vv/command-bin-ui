@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { UserService } from '@app/services/user';
 
 @Component({
   selector: 'app-main',
@@ -8,5 +9,11 @@ import { RouterOutlet } from '@angular/router';
   styles: ``
 })
 export class Main {
+
+  protected userService = inject(UserService);
+
+  protected get userName() {
+    return this.userService.user?.name || '';
+  }
 
 }

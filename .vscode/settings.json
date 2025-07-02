@@ -2,6 +2,7 @@
     "cSpell.words": [
         "basecoat",
         "oklch",
+        "popovertarget",
         "toastify"
     ],
     "typescript.tsdk": "node_modules/typescript/lib"

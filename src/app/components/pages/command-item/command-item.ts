@@ -1,6 +1,7 @@
-import { Component, input } from '@angular/core';
-import { ICommandItem } from '../../../models/command';
-
+import { Component, inject, input } from '@angular/core';
+import { ICommandItem } from '@app/models/command';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { ToastService } from '@app/services/toast-service';
 @Component({
   selector: 'app-command-item',
   imports: [],
@@ -12,6 +13,12 @@ import { ICommandItem } from '../../../models/command';
 export class CommandItem {
 
   public command = input.required<ICommandItem>();
+  private clipboard = inject(Clipboard);
+  private toastService = inject(ToastService);
 
+  public copyCommand() {
+    this.clipboard.copy(this.command().command);
+    this.toastService.showInfo('Command copied to clipboard');
+  }
 
 }

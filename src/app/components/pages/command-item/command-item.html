@@ -3,7 +3,7 @@
         <div class="w-full h-full flex gap-2 items-center">
             <span class="shrink-0">></span>
             <span class="shrink line-clamp-1">{{command().command}}</span>
-            <button class="ml-auto shrink-0 btn-sm btn btn-square btn-neutral">
+            <button class="ml-auto shrink-0 btn-sm btn btn-square btn-neutral" (click)="copyCommand()">
                 <span class="material-symbols-outlined">content_copy</span>
             </button>
         </div>

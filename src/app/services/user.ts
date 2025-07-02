@@ -4,6 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 import { LocalStorageKey } from '../models/storage';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +12,7 @@ import { environment } from '../../environments/environment';
 export class UserService {
 
   private http = inject(HttpClient);
+  private router = inject(Router);
 
   private _user: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null);
 
@@ -47,6 +49,7 @@ export class UserService {
   public logout() {
     this.setAuthState(null);
     this.token = null;
+    this.router.navigate(['/login']);
   }
 
   public loginAsync(user: Omit<User, 'id' | 'name'> & { password: string }) {

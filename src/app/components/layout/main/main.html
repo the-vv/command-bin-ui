@@ -4,14 +4,25 @@
             <a class="btn btn-ghost text-xl flex gap-4 w-max">
                 <img src="/icon.png" class="h-8" alt="">
                 <span>
-                    <span  style="letter-spacing: 2px;">CMD</span> Bin_
+                    <span style="letter-spacing: 2px;">CMD</span> Bin_
                 </span>
             </a>
         </div>
         <div class="flex-none">
-            <ul class="menu menu-horizontal px-1">
-                <li><a>Link</a></li>
-            </ul>
+            <div class="dropdown dropdown-end">
+                <div tabindex="0" role="button" class="btn btn-ghost">
+                    <span class="hidden md:inline">{{ userName }}</span>
+                    <span class="material-symbols-outlined">arrow_drop_down</span>
+                </div>
+                <ul tabindex="0" class="dropdown-content menu bg-base-200 rounded-box z-1 w-52 p-2 shadow-md">
+                    <li (click)="userService.logout()" class="text-red-500">
+                        <a class="w-full flex items-center gap-2 justify-between">
+                        Logout
+                        <span class="material-symbols-outlined">logout</span>
+                    </a>
+                </li>
+                </ul>
+            </div>
         </div>
     </div>
     <router-outlet></router-outlet>
