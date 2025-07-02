@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ICommandItem } from '@app/models/command';
+import { ESource } from '@app/models/common';
 import { of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
@@ -31,5 +32,18 @@ export class CommandService {
   }
   public getAllCommands() {
     return this.http.get<ICommandItem[]>(`${environment.apiBaseUrl}/command`);
+  }
+
+  public getBySource(source: ESource, sourceId?: string) {
+    if (!source) {
+      return of([] as ICommandItem[]);
+    }
+    // Add other sources as needed
+    return this.http.get<ICommandItem[]>(`${environment.apiBaseUrl}/command/bySource`, {
+      params: {
+        source: source,
+        sourceId: sourceId || ''
+      }
+    });
   }
 }

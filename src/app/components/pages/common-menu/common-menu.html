@@ -1,0 +1,19 @@
+<!-- <div class="w-full flex items-center justify-between px-4 py-4 bg-base-300">
+    <span class="font-bold">Command Menu</span>
+</div> -->
+<ul class="menu text-base-content w-full p-2">
+    <li>
+        <a class="flex gap-2 items-center" [class.menu-active]="selectedSource() === eSource.RECENT"
+            (click)="chooseRecent()">
+            <span class="material-symbols-outlined">history</span>
+            Recent Commands
+        </a>
+    </li>
+    <li>
+        <a class="flex gap-2 items-center" [class.menu-active]="selectedSource() === eSource.FAVORITES"
+            (click)="chooseFavorites()">
+            <span class="material-symbols-outlined">star</span>
+            Favorites
+        </a>
+    </li>
+</ul>

@@ -1,4 +1,4 @@
-import { Component, inject, output, resource, signal } from '@angular/core';
+import { Component, inject, model, output, resource, signal } from '@angular/core';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { CategoryService } from '@app/services/category-service';
 import { CommonDialog } from "../../commons/common-dialog/common-dialog";
@@ -11,6 +11,7 @@ import { InputValidationDirective } from '@app/directives/input-validation';
 import { firstValueFrom, tap } from 'rxjs';
 import { NgClass } from '@angular/common';
 import { Spinner } from "../../commons/spinner/spinner";
+import { ESource } from '@app/models/common';
 
 @Component({
   selector: 'app-category-list',
@@ -20,6 +21,8 @@ import { Spinner } from "../../commons/spinner/spinner";
 })
 export class CategoryList {
 
+  public eSource = ESource;
+  public selectedSource = model.required<ESource | null>();
   private categoryService = inject(CategoryService);
   private userService = inject(UserService)
   private toastService = inject(ToastService); // Assuming ToastService is used for error handling
@@ -32,15 +35,7 @@ export class CategoryList {
   protected loadingCreate = signal<boolean>(false);
 
   public categoryResource = resource({
-    loader: () => firstValueFrom(this.categoryService.getMyCategories()
-      .pipe(tap(categories => {
-        if (categories.length > 0) {
-          this.selectedCategoryId.set(categories[0].id!); // Select the first category by default
-          this.categoryChanged.emit(categories[0]);
-        } else {
-          this.selectedCategoryId.set('');
-        }
-      })))
+    loader: () => firstValueFrom(this.categoryService.getMyCategories())
   })
 
   public createCategory(dialogRef: CommonDialog) {

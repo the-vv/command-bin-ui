@@ -5,11 +5,12 @@
     </button>
 </div>
 <ul class="menu text-base-content w-full p-4 pt-2">
-    <!-- Sidebar content here -->
-    <!-- <li><a>Recent Commands</a></li>
-    <li><a>Frequent Commands</a></li> -->
     @for(cat of categoryResource.value() || []; track cat.id) {
-      <li (click)="selectCategory(cat)"><a [ngClass]="{'menu-active': cat.id === selectedCategoryId()}">{{ cat.name }}</a></li>
+    <li (click)="selectCategory(cat)">
+        <a [ngClass]="{'menu-active': cat.id === selectedCategoryId() && selectedSource() === eSource.CATEGORY}">
+            {{ cat.name }}
+        </a>
+    </li>
     } @empty {
         @if (categoryResource.isLoading()) {
             @defer {

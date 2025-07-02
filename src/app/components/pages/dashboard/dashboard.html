@@ -4,7 +4,10 @@
         <div class="size-full flex flex-col">
             <div class="flex gap-2">
                 <div class="w-full p-4 flex justify-between items-center bg-base-300 border-l border-base-200">
-                    <span class="text-lg">{{selectedCategory()?.name || 'Commands'}}</span>
+                    <div class="flex items-center gap-4">
+                        <span class="material-symbols-outlined text-2xl!">{{getIconName()}}</span>
+                        <span class="text-lg">{{selectedSourceName() || 'Commands'}}</span>
+                    </div>
                     <button class="btn btn-soft btn-primary btn-sm">
                         <span class="material-symbols-outlined">add</span>
                         Create
@@ -22,7 +25,13 @@
     <div class="drawer-side bg-base-200 h-full">
         <div class="w-72 block">
             @defer {
-                <app-category-list class="block" (categoryChanged)="selectCategory($event)"></app-category-list>
+                <app-common-menu [(selectedSource)]="selectedSource"></app-common-menu>
+            } @loading {
+                <app-spinner></app-spinner>
+            }
+            @defer {
+                <app-category-list class="block" [(selectedSource)]="selectedSource"
+                    (categoryChanged)="selectedCategory($event)"></app-category-list>
             } @loading {
                 <app-spinner></app-spinner>
             }
