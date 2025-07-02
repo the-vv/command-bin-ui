@@ -46,11 +46,11 @@
 </div>
 
 <app-common-dialog title="Create Command" #commandDialog="commonDialog" [dialogStyles]="{maxWidth: '600px'}">
-    @defer (on viewport) {
-        @if (commandDialog.isOpen()) {
+    @if (commandDialog.isOpen()) {
+        @defer (on viewport) {
             <app-create-command (onCreated)="commandCreated($event, commandDialog)"></app-create-command>
+        } @placeholder {
+            <app-spinner></app-spinner>
         }
-    } @placeholder {
-        <app-spinner></app-spinner>
     }
 </app-common-dialog>
