@@ -18,10 +18,10 @@ export class CommandService {
     }
     return this.http.get<ICommandItem[]>(`${environment.apiBaseUrl}/command/category/${categoryId}`);
   }
-  public createCommand(command: ICommandItem) {
+  public createCommand(command: ICommandItem & { userId: string }) {
     return this.http.post<ICommandItem>(`${environment.apiBaseUrl}/command`, command);
   }
-  public updateCommand(command: ICommandItem) {
+  public updateCommand(command: ICommandItem & { userId: string }) {
     return this.http.patch<ICommandItem>(`${environment.apiBaseUrl}/command/${command.id}`, command);
   }
   public deleteCommand(commandId: string) {

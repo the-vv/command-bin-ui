@@ -8,5 +8,7 @@
             </button>
         </div>
     </div>
-    <p>{{command().description}}</p>
+    @if (command().description) {
+        <p>{{command().description}}</p>
+    }
 </div>

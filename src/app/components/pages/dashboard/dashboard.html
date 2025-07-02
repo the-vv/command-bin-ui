@@ -8,7 +8,7 @@
                         <span class="material-symbols-outlined text-2xl!">{{getIconName()}}</span>
                         <span class="text-lg">{{selectedSourceName() || 'Commands'}}</span>
                     </div>
-                    <button class="btn btn-soft btn-primary btn-sm">
+                    <button class="btn btn-soft btn-primary btn-sm" (click)="commandDialog.open()">
                         <span class="material-symbols-outlined">add</span>
                         Create
                     </button>
@@ -44,3 +44,11 @@
         </div>
     </div>
 </div>
+
+<app-common-dialog title="Create Command" #commandDialog="commonDialog" [dialogStyles]="{maxWidth: '600px'}">
+    @defer (on viewport) {
+        <app-create-command (onCreated)="commandCreated($event, commandDialog)"></app-create-command>
+    } @placeholder {
+        <app-spinner></app-spinner>
+    }
+</app-common-dialog>

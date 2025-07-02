@@ -1,0 +1,48 @@
+<form [formGroup]="commandForm" class="flex flex-col gap-4 w-full">
+    <div class="flex gap-2 flex-col">
+        <div class="bg-black/50 p-3 rounded-xl">
+            <div class="w-full h-full flex gap-2 items-start max-h-[200px] overflow-auto">
+                <span class="shrink-0">></span>
+                <textarea cdkTextareaAutosize placeholder="Type here" id="command"
+                    class="border-0 bg-transparent w-full focus:outline-none placeholder:opacity-30"
+                    formControlName="command" inputValidation></textarea>
+            </div>
+        </div>
+    </div>
+    <div class="flex gap-2 flex-col">
+        <label for="categoryDescription" class="w-24">Description</label>
+        <textarea placeholder="Type here" id="categoryDescription" class="textarea w-full"
+            formControlName="description"></textarea>
+    </div>
+    <div class="w-full flex gap-4 items-center">
+        <div class="flex gap-2 flex-col w-full grow">
+            <label for="category" class="w-24">Category</label>
+            <select class="select w-full" formControlName="categoryId" placeholder="Pick a Category">
+                <option selected value="">None</option>
+                @for(category of allCategories(); track category.id) {
+                    <option [value]="category.id" [selected]="category.id === commandForm.value.categoryId">
+                        {{ category.name }}
+                    </option>
+                } @empty {
+                    <option disabled>No categories found</option>
+                }
+            </select>
+        </div>
+        <div class="w-full flex gap-2 flex-col grow">
+            <label for="folder" class="w-24">Folder</label>
+            <select class="select w-full" formControlName="folderId" placeholder="Pick a Folder">
+                <option selected value="">None</option>
+                @for(folder of allFolders(); track folder.id) {
+                    <option [value]="folder.id" [selected]="folder.id === commandForm.value.folderId">
+                        {{ folder.name }}
+                    </option>
+                } @empty {
+                    <option disabled>No folders found</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="flex justify-end">
+        <button class="btn btn-primary" (click)="createCommand()" [loadingBtn]="loadingCreate()">Create</button>
+    </div>
+</form>

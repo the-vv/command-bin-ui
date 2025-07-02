@@ -1,6 +1,9 @@
+import { AbstractControl, FormArray, FormControl, FormGroup } from "@angular/forms";
+
 export interface ICommandItem {
-    id: string;
+    id?: string;
     command: string;
     description: string;
-    category: string;
+    categoryId?: string;
+    folderId?: string;
 }

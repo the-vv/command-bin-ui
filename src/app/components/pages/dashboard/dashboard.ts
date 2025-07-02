@@ -11,10 +11,12 @@ import { FolderList } from '../folder-list/folder-list';
 import { Spinner } from '@app/components/commons/spinner/spinner';
 import { CategoryList } from '../category-list/category-list';
 import { CommandList } from '../command-list/command-list';
+import { CommonDialog } from "../../commons/common-dialog/common-dialog";
+import { CreateCommand } from "../create-command/create-command";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CategoryList, Spinner, CommandList, CommonMenu, FolderList],
+  imports: [CategoryList, Spinner, CommandList, CommonMenu, FolderList, CommonDialog, CreateCommand],
   templateUrl: './dashboard.html',
   styles: ``
 })
@@ -78,6 +80,11 @@ export class Dashboard {
     this.selectedSourceId.set(folder.id!);
     this.selectedSourceName.set(folder.name);
     this.selectedSource.set(ESource.FOLDER);
+  }
+
+  commandCreated(command: ICommandItem, dialogRef: CommonDialog) {
+    this.commandResource.reload();
+    dialogRef.close();
   }
 
 }

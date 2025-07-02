@@ -21,7 +21,7 @@ router-outlet {
     }
 }
 
-:where(.input, .textarea):focus,
-:where(.input, .textarea):focus-within {
+:where(.input, .textarea, .select):focus,
+:where(.input, .textarea, .select):focus-within {
     outline-offset: -1px !important;
 }
