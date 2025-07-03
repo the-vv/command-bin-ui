@@ -1,9 +1,9 @@
-<div class="w-full border-2 border-base-300 shadow-md p-4 flex flex-col gap-3 rounded-2xl hover:shadow-xl">
+<div class="command-item w-full border-2 border-base-300 shadow-md p-4 flex flex-col gap-3 rounded-2xl hover:shadow-xl">
     <div class="bg-black/50 p-3 rounded-xl">
         <div class="w-full h-full flex gap-2 items-start">
             <span class="shrink-0">></span>
             <span class="shrink">{{command().command}}</span>
-            <button class="ml-auto shrink-0 btn-sm btn btn-square btn-neutral"
+            <button class="ml-auto shrink-0 btn-sm btn btn-square btn-primary btn-soft"
                 (click)="copyCommand()" [ngClass]="{ 'btn-success': copied() }">
                 <span class="swap swap-rotate">
                     <input type="checkbox" [checked]="copied()" />
@@ -11,11 +11,25 @@
                     <span class="material-symbols-outlined swap-on fill-current">check</span>
                   </span>
             </button>
+            <button class="shrink-0 btn-sm btn btn-square btn-warning btn-soft" (click)="commandDialog.open()">
+                <span class="material-symbols-outlined">edit</span>
+            </button>
         </div>
     </div>
     @if (command().description) {
-        <p>{{command().description}}</p>
+        <p class="description">{{command().description}}</p>
     } @else {
         <p class="text-gray-500">No description provided</p>
     }
 </div>
+
+<app-common-dialog title="Update Command" #commandDialog="commonDialog" [dialogStyles]="{maxWidth: '600px'}">
+    @if (commandDialog.isOpen()) {
+        @defer (on viewport) {
+            <app-create-command (onCreated)="commandCreated($event, commandDialog)"
+                [commandEditItem]="command()"></app-create-command>
+        } @placeholder {
+            <app-spinner></app-spinner>
+        }
+    }
+</app-common-dialog>

@@ -54,7 +54,8 @@
 <app-common-dialog title="Create Command" #commandDialog="commonDialog" [dialogStyles]="{maxWidth: '600px'}">
     @if (commandDialog.isOpen()) {
         @defer (on viewport) {
-            <app-create-command (onCreated)="commandCreated($event, commandDialog)"></app-create-command>
+            <app-create-command (onCreated)="commandCreated($event, commandDialog)"
+                [selectedSource]="selectedSource()" [selectedSourceId]="selectedSourceId()"></app-create-command>
         } @placeholder {
             <app-spinner></app-spinner>
         }

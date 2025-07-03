@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ICommandItem } from '@app/models/command';
 import { ESource } from '@app/models/common';
-import { of } from 'rxjs';
+import { of, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -11,6 +11,8 @@ import { environment } from 'src/environments/environment';
 export class CommandService {
 
   private http = inject(HttpClient);
+
+  public reloadCommands$ = new Subject<void>();
 
   public getCommandsByCategoryId(categoryId: string) {
     if (!categoryId) {
@@ -22,7 +24,7 @@ export class CommandService {
     return this.http.post<ICommandItem>(`${environment.apiBaseUrl}/command`, command);
   }
   public updateCommand(command: ICommandItem & { userId: string }) {
-    return this.http.patch<ICommandItem>(`${environment.apiBaseUrl}/command/${command.id}`, command);
+    return this.http.put<ICommandItem>(`${environment.apiBaseUrl}/command/${command.id}`, command);
   }
   public deleteCommand(commandId: string) {
     return this.http.delete(`${environment.apiBaseUrl}/command/${commandId}`);

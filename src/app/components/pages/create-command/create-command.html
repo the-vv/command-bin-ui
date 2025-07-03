@@ -43,6 +43,9 @@
         </div>
     </div>
     <div class="flex justify-end">
-        <button class="btn btn-primary" (click)="createCommand()" [loadingBtn]="loadingCreate()">Create</button>
+        <button class="btn btn-primary" (click)="createCommand()"
+            [loadingBtn]="loadingCreate()">
+            {{isEditMode ? 'Update' : 'Create'}}
+        </button>
     </div>
 </form>

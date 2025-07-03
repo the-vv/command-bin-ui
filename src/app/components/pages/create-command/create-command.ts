@@ -28,6 +28,7 @@ export class CreateCommand implements OnInit {
 
   public selectedSource = input<ESource | null>();
   public selectedSourceId = input<string | null>(null);
+  public commandEditItem = input<ICommandItem | null>(null);
 
   public onCreated = output<ICommandItem>();
 
@@ -52,8 +53,13 @@ export class CreateCommand implements OnInit {
     }
     this.loadCategories();
     this.loadFolders();
+    if (this.commandEditItem()) {
+      this.commandForm.patchValue(this.commandEditItem()!);
+    }
   }
-
+  protected get isEditMode() {
+    return !!this.commandEditItem();
+  }
   private loadCategories(): void {
     this.categoryService.getMyCategories().subscribe({
       next: categories => {
@@ -90,18 +96,33 @@ export class CreateCommand implements OnInit {
       userId: this.userService.user!.id
     };
     this.loadingCreate.set(true);
-    this.commandService.createCommand(command).subscribe({
-      next: () => {
-        this.loadingCreate.set(false);
-        this.toastService.showSuccess('Command created successfully');
-        this.commandForm.reset();
-        this.onCreated.emit(command);
-      },
-      error: err => {
-        this.loadingCreate.set(false);
-        this.toastService.showError(err);
-      }
-    });
+    if (this.isEditMode) {
+      this.commandService.updateCommand({...command, id: this.commandEditItem()!.id}).subscribe({
+        next: () => {
+          this.loadingCreate.set(false);
+          this.toastService.showSuccess('Command updated successfully');
+          this.commandForm.reset();
+          this.onCreated.emit(command);
+        },
+        error: err => {
+          this.loadingCreate.set(false);
+          this.toastService.showError(err);
+        }
+      });
+    } else {
+      this.commandService.createCommand(command).subscribe({
+        next: () => {
+          this.loadingCreate.set(false);
+          this.toastService.showSuccess('Command created successfully');
+          this.commandForm.reset();
+          this.onCreated.emit(command);
+        },
+        error: err => {
+          this.loadingCreate.set(false);
+          this.toastService.showError(err);
+        }
+      });
+    }
   }
 
 }

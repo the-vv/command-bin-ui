@@ -5,6 +5,9 @@
 // Page styles
 @import "./styles/pages/login";
 
+:root {
+    interpolate-size: allow-keywords;
+}
 
 body {
     font-family: "Space Mono", monospace;

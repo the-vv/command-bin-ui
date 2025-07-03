@@ -15,6 +15,7 @@ import { CommonDialog } from "../../commons/common-dialog/common-dialog";
 import { CreateCommand } from "../create-command/create-command";
 import { CommandFilterPipe } from '@app/pipes/command-filter-pipe';
 import { FormsModule } from '@angular/forms';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-dashboard',
@@ -48,6 +49,9 @@ export class Dashboard {
       } else if (this.selectedSource() === ESource.RECENT) {
         this.selectedSourceName.set('Recent Commands')
       }
+    });
+    this.commandService.reloadCommands$.pipe(takeUntilDestroyed()).subscribe(() => {
+      this.commandResource.reload();
     })
   }
 

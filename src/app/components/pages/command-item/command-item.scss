@@ -1,0 +1,18 @@
+:host {
+    display: block;
+}
+
+.description {
+    @apply text-ellipsis;
+    max-height: 24px;
+    transition: max-height 0.3s ease-in-out;
+    overflow: hidden;
+}
+
+.command-item {
+    &:hover {
+        .description {
+            max-height: max-content;
+        }
+    }
+}
