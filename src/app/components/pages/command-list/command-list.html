@@ -1,15 +1,17 @@
-<div class="w-full h-full grid grid-cols-1 xl:grid-cols-2 overflow-auto gap-4 p-4">
-    @for (command of commandsList(); track command.id) {
-        <app-command-item [command]="command"></app-command-item>
-    } @empty {
-        <div class="flex flex-col items-center justify-center gap-8 size-full col-span-2">
-            @if (loading()) {
-                <app-spinner></app-spinner>
-                <span class="text-gray-500 text-3xl">Loading...</span>
-            } @else {
-                <span class="material-symbols-outlined text-gray-500 text-8xl!">terminal</span>
-                <span class="text-gray-500 text-3xl">No commands found</span>
-            }
-        </div>
-    }
+<div class="size-full overflow-auto">
+    <div class="w-full grid grid-cols-1 xl:grid-cols-2 overflow-auto gap-4 p-4">
+        @for (command of commandsList(); track command.id) {
+            <app-command-item [command]="command"></app-command-item>
+        } @empty {
+            <div class="flex flex-col items-center justify-center gap-8 size-full col-span-2">
+                @if (loading()) {
+                    <app-spinner></app-spinner>
+                    <span class="text-gray-500 text-3xl">Loading...</span>
+                } @else {
+                    <span class="material-symbols-outlined text-gray-500 text-8xl!">terminal</span>
+                    <span class="text-gray-500 text-3xl">No commands found</span>
+                }
+            </div>
+        }
+    </div>
 </div>

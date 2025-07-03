@@ -1,14 +1,21 @@
 <div class="w-full border-2 border-base-300 shadow-md p-4 flex flex-col gap-3 rounded-2xl hover:shadow-xl">
     <div class="bg-black/50 p-3 rounded-xl">
-        <div class="w-full h-full flex gap-2 items-center">
+        <div class="w-full h-full flex gap-2 items-start">
             <span class="shrink-0">></span>
-            <span class="shrink line-clamp-1">{{command().command}}</span>
-            <button class="ml-auto shrink-0 btn-sm btn btn-square btn-neutral" (click)="copyCommand()">
-                <span class="material-symbols-outlined">content_copy</span>
+            <span class="shrink">{{command().command}}</span>
+            <button class="ml-auto shrink-0 btn-sm btn btn-square btn-neutral"
+                (click)="copyCommand()" [ngClass]="{ 'btn-success': copied() }">
+                <span class="swap swap-rotate">
+                    <input type="checkbox" [checked]="copied()" />
+                    <span class="material-symbols-outlined swap-off fill-current">content_copy</span>
+                    <span class="material-symbols-outlined swap-on fill-current">check</span>
+                  </span>
             </button>
         </div>
     </div>
     @if (command().description) {
         <p>{{command().description}}</p>
+    } @else {
+        <p class="text-gray-500">No description provided</p>
     }
 </div>

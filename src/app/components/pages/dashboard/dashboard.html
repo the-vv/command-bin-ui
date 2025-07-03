@@ -8,14 +8,20 @@
                         <span class="material-symbols-outlined text-2xl!">{{getIconName()}}</span>
                         <span class="text-lg">{{selectedSourceName() || 'Commands'}}</span>
                     </div>
-                    <button class="btn btn-soft btn-primary btn-sm" (click)="commandDialog.open()">
-                        <span class="material-symbols-outlined">add</span>
-                        Create
-                    </button>
+                    <div class="shrink-0 flex gap-2 items-center">
+                        <label class="input input-sm">
+                            <span class="material-symbols-outlined">search</span>
+                            <input type="search" required placeholder="Search" [(ngModel)]="searchString" />
+                        </label>
+                        <button class="btn btn-soft btn-primary btn-sm" (click)="commandDialog.open()">
+                            <span class="material-symbols-outlined">add</span>
+                            Create
+                        </button>
+                    </div>
                 </div>
             </div>
             @defer {
-                <app-command-list [commandsList]="commandResource.value() || []" class="grow min-h-0! h-[unset]!"
+                <app-command-list [commandsList]="(commandResource.value() || []) | commandFilter: searchString()" class="grow min-h-0! h-[unset]!"
                     [loading]="commandResource.isLoading()"></app-command-list>
             } @loading {
                 <app-spinner></app-spinner>

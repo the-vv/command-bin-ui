@@ -1,4 +1,4 @@
-import { Component, effect, inject, resource, signal } from '@angular/core';
+import { Component, effect, inject, model, resource, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { CommandService } from '@app/services/command-service';
 import { Category } from '@app/models/category';
@@ -13,10 +13,12 @@ import { CategoryList } from '../category-list/category-list';
 import { CommandList } from '../command-list/command-list';
 import { CommonDialog } from "../../commons/common-dialog/common-dialog";
 import { CreateCommand } from "../create-command/create-command";
+import { CommandFilterPipe } from '@app/pipes/command-filter-pipe';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CategoryList, Spinner, CommandList, CommonMenu, FolderList, CommonDialog, CreateCommand],
+  imports: [CategoryList, Spinner, CommandList, CommonMenu, FolderList, CommonDialog, CreateCommand, CommandFilterPipe, FormsModule],
   templateUrl: './dashboard.html',
   styles: ``
 })
@@ -27,6 +29,7 @@ export class Dashboard {
   public selectedSource = signal<ESource | null>(ESource.RECENT);
   public selectedSourceId = signal<string | null>(null);
   public selectedSourceName = signal<string | null>(null);
+  public searchString = model<string>()
   public commandResource = resource({
     params: () => ({ source: this.selectedSource(), sourceId: this.selectedSourceId() }),
     loader: (req) => req.params.source ?
