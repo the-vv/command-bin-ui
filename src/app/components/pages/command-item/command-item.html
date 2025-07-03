@@ -1,7 +1,7 @@
 <div class="command-item w-full border-2 border-base-300 shadow-md p-4 flex flex-col gap-3 rounded-2xl hover:shadow-xl">
     <div class="bg-black/50 p-3 rounded-xl">
         <div class="w-full h-full flex gap-2 items-start">
-            <span class="shrink-0">></span>
+            <span class="shrink-0 select-none">></span>
             <span class="shrink">{{command().command}}</span>
             <button class="ml-auto shrink-0 btn-sm btn btn-square btn-primary btn-soft"
                 (click)="copyCommand()" [ngClass]="{ 'btn-success': copied() }">
