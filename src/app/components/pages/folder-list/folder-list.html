@@ -51,7 +51,8 @@
       <p>Are you sure you want to make this folder a shared folder?</p>
       <div class="flex justify-end gap-2">
         <button class="btn btn-secondary btn-soft" (click)="shareDialog.close()">Cancel</button>
-        <button class="btn btn-primary" (click)="shareFolder(shareDialog, linkDialog)">Confirm</button>
+        <button class="btn btn-primary" (click)="shareFolder(shareDialog, linkDialog)"
+          [loadingBtn]="sharingFolderLoading()">Confirm</button>
       </div>
     </div>
 </app-common-dialog>
