@@ -23,12 +23,20 @@ export class FolderService {
       );
   }
 
+  folderGetById(folderId: string) {
+    return this.http.get<Folder>(`${environment.apiBaseUrl}/folder/${folderId}`);
+  }
+
   public createFolder(folder: Folder) {
     return this.http.post<Folder>(`${environment.apiBaseUrl}/folder`, folder);
   }
 
   public updateFolder(folderName: string, folderId: string) {
     return this.http.patch<Folder>(`${environment.apiBaseUrl}/folder/${folderId}/name`, { name: folderName });
+  }
+
+  shareFolder(folderId: string) {
+    return this.http.post(`${environment.apiBaseUrl}/folder/${folderId}/share`, {});
   }
 
 }

@@ -1,5 +1,5 @@
-import { Component, effect, inject, model, resource, signal } from '@angular/core';
-import { firstValueFrom } from 'rxjs';
+import { Component, effect, inject, model, OnInit, resource, signal } from '@angular/core';
+import { filter, firstValueFrom, pipe } from 'rxjs';
 import { CommandService } from '@app/services/command-service';
 import { Category } from '@app/models/category';
 import { ICommandItem } from '@app/models/command';
@@ -16,6 +16,8 @@ import { CreateCommand } from "../create-command/create-command";
 import { CommandFilterPipe } from '@app/pipes/command-filter-pipe';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { FolderService } from '@app/services/folder-service';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,24 +25,28 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
   templateUrl: './dashboard.html',
   styles: ``
 })
-export class Dashboard {
+export class Dashboard implements OnInit {
 
   private commandService = inject(CommandService);
   private toastService = inject(ToastService);
-  public selectedSource = signal<ESource | null>(ESource.RECENT);
+  private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
+  private folderService = inject(FolderService);
+  public selectedSource = signal<ESource | null>(null);
   public selectedSourceId = signal<string | null>(null);
   public selectedSourceName = signal<string | null>(null);
-  public searchString = model<string>()
+  public searchString = model<string>();
   public commandResource = resource({
     params: () => ({ source: this.selectedSource(), sourceId: this.selectedSourceId() }),
     loader: (req) => req.params.source ?
       firstValueFrom(this.commandService.getBySource(req.params.source, this.getSourceId()))
-      .catch(err => {
-        this.toastService.showError(err);
-        return [] as ICommandItem[]
-      }) :
+        .catch(err => {
+          this.toastService.showError(err);
+          return [] as ICommandItem[]
+        }) :
       Promise.resolve([] as ICommandItem[]),
   });
+  isShared = signal<boolean>(false);
 
   constructor() {
     effect(() => {
@@ -53,6 +59,39 @@ export class Dashboard {
     this.commandService.reloadCommands$.pipe(takeUntilDestroyed()).subscribe(() => {
       this.commandResource.reload();
     })
+    this.router.events.pipe(
+      takeUntilDestroyed(),
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.initializeCommandSelection();
+    });
+  }
+
+  ngOnInit(): void {
+    this.initializeCommandSelection();
+  }
+
+  initializeCommandSelection(): void {
+    const { type, id } = this.activatedRoute.snapshot.params;
+    if (type && Object.values(ESource).includes(type as ESource)) {
+      this.selectedSource.set(type as ESource);
+      this.selectedSourceId.set(id || null);
+      this.isShared.set(type === ESource.FOLDER && !!id);
+      switch (type) {
+        case ESource.FOLDER: {
+          this.folderService.folderGetById(id).subscribe({
+            next: (folder) => this.selectedSourceName.set(folder.name),
+            error: () => this.selectedSourceName.set('Folder')
+          });
+          break;
+        }
+      }
+    } else {
+      this.selectedSource.set(ESource.RECENT);
+      this.selectedSourceId.set(null);
+      this.selectedSourceName.set('Recent Commands');
+      this.isShared.set(false);
+    }
   }
 
   private getSourceId() {

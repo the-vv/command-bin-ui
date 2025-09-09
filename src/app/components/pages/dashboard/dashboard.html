@@ -7,6 +7,9 @@
                     <div class="flex items-center gap-4">
                         <span class="material-symbols-outlined text-2xl!">{{getIconName()}}</span>
                         <span class="text-lg">{{selectedSourceName() || 'Commands'}}</span>
+                        @if (isShared()) {
+                          <span class="badge badge-sm badge-primary gap-1 mt-1">Shared<span class="material-symbols-outlined text-sm!">share</span></span>
+                        }
                     </div>
                     <div class="shrink-0 flex gap-2 items-center">
                         <label class="input input-sm">

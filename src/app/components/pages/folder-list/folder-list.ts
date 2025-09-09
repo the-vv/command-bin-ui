@@ -33,6 +33,9 @@ export class FolderList {
     name: ['', Validators.required],
   });
   protected loadingCreate = signal<boolean>(false);
+  protected sharingFolder = signal<Folder | null>(null);
+  protected sharedFolderLink = signal<string>('');
+  sharingFolderLoading = signal<boolean>(false);
 
   public folderResource = resource({
     loader: () => firstValueFrom(this.folderService.getMyFolders())
@@ -70,4 +73,39 @@ export class FolderList {
     this.categoryChanged.emit(folder);
   }
 
+  shareFolder(dialog: CommonDialog, linkDialog: CommonDialog) {
+    this.sharingFolderLoading.set(true);
+    this.folderService.shareFolder(this.sharingFolder()?.id!).subscribe({
+      next: () => {
+        this.sharingFolderLoading.set(false);
+        this.toastService.showSuccess('Folder shared successfully!');
+        this.sharedFolderLink.set(`${window.location.origin}/shared/folder/${this.sharingFolder()?.id}`);
+        dialog.close();
+        linkDialog.open();
+      },
+      error: (err) => {
+        this.sharingFolderLoading.set(false);
+        this.toastService.showError(err);
+      }
+    });
+  }
+
+  checkAndOpenShare(event: MouseEvent, folder: Folder, shareDialog: CommonDialog, linkDialog: CommonDialog) {
+    event.stopPropagation();
+    if (folder.shared) {
+      this.sharedFolderLink.set(`${window.location.origin}/shared/folder/${folder.id}`);
+      linkDialog.open();
+    } else {
+      this.sharingFolder.set(folder);
+      shareDialog.open();
+    }
+  }
+
+  copyTextToClipboard(text: string) {
+    navigator.clipboard.writeText(text).then(() => {
+      this.toastService.showSuccess('Link copied to clipboard!');
+    }).catch(err => {
+      this.toastService.showError('Failed to copy link: ' + err);
+    });
+  }
 }

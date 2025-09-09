@@ -10,8 +10,17 @@
 <ul class="menu text-base-content w-full p-4 pt-2">
     @for(folder of folderResource.value() || []; track folder.id) {
         <li (click)="selectFolder(folder)">
-            <a [ngClass]="{'menu-active': folder.id === selectedFolderId() && selectedSource() === eSource.FOLDER}">
-                {{ folder.name }}
+            <a [ngClass]="{'menu-active': folder.id === selectedFolderId() && selectedSource() === eSource.FOLDER}"
+              class="flex gap-2 items-center hover:[&>button]:inline-block">
+                <span class="grow min-w-0">{{ folder.name }}</span>
+                <!-- <span class="material-symbols-outlined text-lg"
+                  (click)="checkAndOpenShare(folder, shareDialog, linkDialog)">share</span> -->
+                <!-- <button class="shrink-0 btn-sm btn btn-square btn-soft hidden" (click)="checkAndOpenShare(folder, shareDialog, linkDialog)"> -->
+                  <span class="material-symbols-outlined text-sm! hover:scale-150 cursor-pointer"
+                     (click)="checkAndOpenShare($event, folder, shareDialog, linkDialog)">
+                    share
+                  </span>
+                <!-- </button> -->
             </a>
         </li>
     } @empty {
@@ -35,4 +44,29 @@
             <button class="btn btn-primary" (click)="createFolder(dialog)" [loadingBtn]="loadingCreate()">Create</button>
         </div>
     </form>
+</app-common-dialog>
+
+<app-common-dialog title="Share Folder" #shareDialog="commonDialog">
+    <div class="flex flex-col gap-4 w-full">
+      <p>Are you sure you want to make this folder a shared folder?</p>
+      <div class="flex justify-end gap-2">
+        <button class="btn btn-secondary btn-soft" (click)="shareDialog.close()">Cancel</button>
+        <button class="btn btn-primary" (click)="shareFolder(shareDialog, linkDialog)">Confirm</button>
+      </div>
+    </div>
+</app-common-dialog>
+
+<app-common-dialog title="Folder Shared" #linkDialog="commonDialog">
+  <div class="flex flex-col gap-4 w-full">
+    <p>The folder has been shared. Use the link below to access it:</p>
+    <div class="w-full flex gap-2 items-center">
+      <input type="text" class="input w-full" [value]="sharedFolderLink()" readonly />
+      <button class="btn btn-square btn-primary btn-soft" (click)="copyTextToClipboard(sharedFolderLink())">
+        <span class="material-symbols-outlined">content_copy</span>
+      </button>
+    </div>
+    <div class="flex justify-end">
+      <button class="btn btn-primary" (click)="linkDialog.close()">Close</button>
+    </div>
+  </div>
 </app-common-dialog>
