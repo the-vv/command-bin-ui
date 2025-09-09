@@ -16,12 +16,12 @@ import { CreateCommand } from "../create-command/create-command";
 import { CommandFilterPipe } from '@app/pipes/command-filter-pipe';
 import { FormsModule } from '@angular/forms';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { FolderService } from '@app/services/folder-service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CategoryList, Spinner, CommandList, CommonMenu, FolderList, CommonDialog, CreateCommand, CommandFilterPipe, FormsModule],
+  imports: [CategoryList, Spinner, CommandList, CommonMenu, FolderList, CommonDialog, CreateCommand, CommandFilterPipe, FormsModule, RouterLink],
   templateUrl: './dashboard.html',
   styles: ``
 })

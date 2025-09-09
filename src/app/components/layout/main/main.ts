@@ -1,10 +1,10 @@
 import { Component, inject } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { UserService } from '@app/services/user';
 
 @Component({
   selector: 'app-main',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, RouterLink],
   templateUrl: './main.html',
   styles: ``
 })

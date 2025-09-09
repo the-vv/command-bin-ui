@@ -5,21 +5,28 @@
             <div class="flex gap-2">
                 <div class="w-full p-4 flex justify-between items-center bg-base-300 border-l border-base-200">
                     <div class="flex items-center gap-4">
-                        <span class="material-symbols-outlined text-2xl!">{{getIconName()}}</span>
-                        <span class="text-lg">{{selectedSourceName() || 'Commands'}}</span>
-                        @if (isShared()) {
-                          <span class="badge badge-sm badge-primary gap-1 mt-1">Shared<span class="material-symbols-outlined text-sm!">share</span></span>
-                        }
+                      @if (isShared()) {
+                        <button class="btn btn-sm btn-circle btn-primary btn-soft" routerLink="/">
+                          <span class="material-symbols-outlined">arrow_back</span>
+                        </button>
+                      }
+                      <span class="material-symbols-outlined text-2xl!">{{getIconName()}}</span>
+                      <span class="text-lg">{{selectedSourceName() || 'Commands'}}</span>
+                      @if (isShared()) {
+                        <span class="badge badge-sm badge-primary gap-1 mt-1">Shared<span class="material-symbols-outlined text-sm!">share</span></span>
+                      }
                     </div>
                     <div class="shrink-0 flex gap-2 items-center">
                         <label class="input input-sm">
                             <span class="material-symbols-outlined">search</span>
                             <input type="search" required placeholder="Search" [(ngModel)]="searchString" />
                         </label>
-                        <button class="btn btn-soft btn-primary btn-sm" (click)="commandDialog.open()">
-                            <span class="material-symbols-outlined">add</span>
-                            Create
-                        </button>
+                        @if (!isShared()) {
+                          <button class="btn btn-soft btn-primary btn-sm" (click)="commandDialog.open()">
+                              <span class="material-symbols-outlined">add</span>
+                              Create
+                          </button>
+                        }
                     </div>
                 </div>
             </div>
@@ -31,27 +38,29 @@
             }
         </div>
     </div>
-    <div class="drawer-side bg-base-200 h-full">
-        <div class="w-72 block">
-            @defer {
-                <app-common-menu [(selectedSource)]="selectedSource"></app-common-menu>
-            } @loading {
-                <app-spinner></app-spinner>
-            }
-            @defer {
-                <app-category-list class="block" [(selectedSource)]="selectedSource"
-                    (categoryChanged)="selectedCategory($event)"></app-category-list>
-            } @loading {
-                <app-spinner></app-spinner>
-            }
-            @defer {
-                <app-folder-list class="block" [(selectedSource)]="selectedSource"
-                    (categoryChanged)="selectedFolder($event)"></app-folder-list>
-            } @loading {
-                <app-spinner></app-spinner>
-            }
-        </div>
-    </div>
+    @if (!isShared()) {
+      <div class="drawer-side bg-base-200 h-full">
+          <div class="w-72 block">
+              @defer {
+                  <app-common-menu [(selectedSource)]="selectedSource"></app-common-menu>
+              } @loading {
+                  <app-spinner></app-spinner>
+              }
+              @defer {
+                  <app-category-list class="block" [(selectedSource)]="selectedSource"
+                      (categoryChanged)="selectedCategory($event)"></app-category-list>
+              } @loading {
+                  <app-spinner></app-spinner>
+              }
+              @defer {
+                  <app-folder-list class="block" [(selectedSource)]="selectedSource"
+                      (categoryChanged)="selectedFolder($event)"></app-folder-list>
+              } @loading {
+                  <app-spinner></app-spinner>
+              }
+          </div>
+      </div>
+    }
 </div>
 
 <app-common-dialog title="Create Command" #commandDialog="commonDialog" [dialogStyles]="{maxWidth: '600px'}">
