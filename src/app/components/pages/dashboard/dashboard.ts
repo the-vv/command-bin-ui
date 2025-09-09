@@ -74,13 +74,15 @@ export class Dashboard implements OnInit {
   initializeCommandSelection(): void {
     const { type, id } = this.activatedRoute.snapshot.params;
     if (type && Object.values(ESource).includes(type as ESource)) {
-      this.selectedSource.set(type as ESource);
-      this.selectedSourceId.set(id || null);
-      this.isShared.set(type === ESource.FOLDER && !!id);
       switch (type) {
         case ESource.FOLDER: {
           this.folderService.folderGetById(id).subscribe({
-            next: (folder) => this.selectedSourceName.set(folder.name),
+            next: (folder) => {
+              this.selectedSource.set(type as ESource);
+              this.selectedSourceId.set(id || null);
+              this.isShared.set(type === ESource.FOLDER && !!id);
+              this.selectedSourceName.set(folder.name);
+            },
             error: () => this.selectedSourceName.set('Folder')
           });
           break;
